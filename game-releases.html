@@ -454,9 +454,9 @@
 </footer>
 
 <script>
-const AMAZON_TAG = 'you082-21'; // <-- hier deinen Amazon Affiliate Tag eintragen
-const IG_REF = '?igr=m00sician';
-const API_KEY = 'f642cf7568f14a0db6470edbff4bd4b3'; // RAWG Demo Key (öffentlich)
+const AMAZON_TAG = 'DEIN-AMAZON-TAG'; // <-- hier deinen Amazon Affiliate Tag eintragen
+const IG_REF = '&igr=m00sician';
+const API_KEY = 'f642cf7568f14a0db6470edbff4bd4b3';
 
 const PLATFORMS = [
   { id: 'all',   label: 'Alle', slug: null,  dot: '#888899', amazon: true,  ig: false },
@@ -636,7 +636,7 @@ function buildLinks(game, platform) {
   let html = '';
 
   if (platform.ig || (currentPlatform.id === 'all' && detectPlatform(game).id === '4')) {
-    const igUrl = `https://www.instant-gaming.com/de/recherche/?q=${encoded}${IG_REF}`;
+    const igUrl = `https://www.instant-gaming.com/de/suche/?query=${encoded}${IG_REF}`;
     html += `<a href="${igUrl}" target="_blank" rel="noopener" class="btn-link primary">
       <span class="btn-icon">💰</span> Instant Gaming
     </a>`;
