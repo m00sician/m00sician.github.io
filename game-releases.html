@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neue Spiele – Aktuelle Releases</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #13131a;
+    --surface2: #1c1c26;
+    --border: rgba(255,255,255,0.07);
+    --border-hover: rgba(255,255,255,0.15);
+    --text: #f0f0f8;
+    --muted: #888899;
+    --accent: #c8ff3e;
+    --accent-dim: rgba(200,255,62,0.15);
+    --accent-text: #0a0a0f;
+    --steam: #1b9ced;
+    --switch: #e4000f;
+    --switch2: #ff6b00;
+    --ps5: #003087;
+    --xbox: #107c10;
+    --radius: 12px;
+    --radius-lg: 18px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: -200px; left: 50%;
+    transform: translateX(-50%);
+    width: 800px; height: 600px;
+    background: radial-gradient(ellipse, rgba(200,255,62,0.04) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  header {
+    position: relative;
+    z-index: 10;
+    padding: 2.5rem 2rem 2rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--text);
+  }
+
+  .logo span { color: var(--accent); }
+
+  .tagline {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 2px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .live-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    color: var(--accent);
+    background: var(--accent-dim);
+    border: 1px solid rgba(200,255,62,0.3);
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-weight: 500;
+  }
+
+  .live-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  main {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .controls {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 2.5rem;
+  }
+
+  .platform-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 18px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.18s ease;
+    user-select: none;
+  }
+
+  .platform-btn:hover {
+    border-color: var(--border-hover);
+    color: var(--text);
+  }
+
+  .platform-btn.active {
+    color: var(--accent-text);
+    background: var(--accent);
+    border-color: var(--accent);
+    font-weight: 600;
+  }
+
+  .platform-btn .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .sort-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .section-title span {
+    color: var(--muted);
+    font-weight: 400;
+    font-size: 0.85rem;
+    margin-left: 8px;
+  }
+
+  select {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 7px 14px;
+    border-radius: var(--radius);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    cursor: pointer;
+    outline: none;
+  }
+
+  select:hover { border-color: var(--border-hover); }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card:hover {
+    transform: translateY(-3px);
+    border-color: var(--border-hover);
+  }
+
+  .card-img {
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    display: block;
+    background: var(--surface2);
+  }
+
+  .card-img-placeholder {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: var(--surface2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    font-size: 2rem;
+  }
+
+  .card-body {
+    padding: 1rem 1.1rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .platform-tag {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+
+  .release-date {
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--text);
+  }
+
+  .card-genres {
+    font-size: 0.75rem;
+    color: var(--muted);
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .rating-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: auto;
+    padding-top: 0.5rem;
+  }
+
+  .stars {
+    color: #f59e0b;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+  }
+
+  .rating-num {
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  .card-links {
+    padding: 0 1.1rem 1rem;
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .btn-link {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 10px;
+    border-radius: var(--radius);
+    font-size: 0.8rem;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    text-decoration: none;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--text);
+    transition: all 0.15s ease;
+    white-space: nowrap;
+  }
+
+  .btn-link:hover {
+    background: var(--surface);
+    border-color: var(--border-hover);
+    color: var(--accent);
+  }
+
+  .btn-link.primary {
+    background: var(--accent-dim);
+    border-color: rgba(200,255,62,0.3);
+    color: var(--accent);
+  }
+
+  .btn-link.primary:hover {
+    background: var(--accent);
+    color: var(--accent-text);
+  }
+
+  .btn-icon { font-size: 0.85rem; }
+
+  .loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5rem 2rem;
+    gap: 1rem;
+    color: var(--muted);
+  }
+
+  .spinner {
+    width: 36px; height: 36px;
+    border: 2px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .error-msg {
+    text-align: center;
+    padding: 3rem;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  .error-msg strong { color: var(--text); display: block; margin-bottom: 0.5rem; font-size: 1rem; }
+
+  .load-more {
+    display: block;
+    margin: 2.5rem auto 0;
+    padding: 12px 32px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 999px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .load-more:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .load-more:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--muted);
+    font-size: 0.75rem;
+    border-top: 1px solid var(--border);
+    margin-top: 3rem;
+  }
+
+  footer a { color: var(--muted); }
+
+  @media (max-width: 600px) {
+    header { padding: 1.5rem 1rem; }
+    main { padding: 1.5rem 1rem; }
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="logo">neue<span>spiele</span>.info</div>
+    <div class="tagline">Aktuelle Releases · Täglich aktualisiert</div>
+  </div>
+  <div class="live-badge">
+    <span class="live-dot"></span>
+    Live-Daten
+  </div>
+</header>
+
+<main>
+  <div class="controls" id="platformControls"></div>
+
+  <div class="sort-row">
+    <div class="section-title">
+      Neue Releases
+      <span id="gameCount"></span>
+    </div>
+    <select id="sortSelect" onchange="changeSort()">
+      <option value="-released">Neueste zuerst</option>
+      <option value="-rating">Beste Bewertung</option>
+      <option value="name">Alphabetisch</option>
+    </select>
+  </div>
+
+  <div id="gameGrid" class="grid"></div>
+  <button class="load-more" id="loadMoreBtn" onclick="loadMore()" style="display:none">
+    Mehr laden
+  </button>
+</main>
+
+<footer>
+  Spieldaten via <a href="https://rawg.io" target="_blank">RAWG.io API</a> &mdash;
+  Affiliate-Links: Amazon Partnerprogramm &amp; Instant Gaming
+</footer>
+
+<script>
+const AMAZON_TAG = 'you082-21'; // <-- hier deinen Amazon Affiliate Tag eintragen
+const IG_REF = '?igr=m00sician';
+const API_KEY = 'f9a8b97d6d2a40a5bc5b5dd8e2c68ba3'; // RAWG Demo Key (öffentlich)
+
+const PLATFORMS = [
+  { id: 'all',   label: 'Alle', slug: null,  dot: '#888899', amazon: true,  ig: false },
+  { id: '4',     label: 'Steam / PC', slug: 'pc', dot: '#1b9ced', amazon: false, ig: true },
+  { id: '18',    label: 'PlayStation 5', slug: 'playstation5', dot: '#003087', amazon: true, ig: false },
+  { id: '1',     label: 'Xbox', slug: 'xbox', dot: '#107c10', amazon: true, ig: false },
+  { id: '7',     label: 'Nintendo Switch', slug: 'nintendo-switch', dot: '#e4000f', amazon: true, ig: false },
+  { id: 'ns2',   label: 'Switch 2', slug: null, dot: '#ff6b00', amazon: true, ig: false, virtual: true },
+];
+
+let currentPlatform = PLATFORMS[0];
+let currentSort = '-released';
+let currentPage = 1;
+let totalCount = 0;
+let allGames = [];
+
+function buildControls() {
+  const el = document.getElementById('platformControls');
+  PLATFORMS.forEach(p => {
+    const btn = document.createElement('button');
+    btn.className = 'platform-btn' + (p.id === 'all' ? ' active' : '');
+    btn.dataset.id = p.id;
+    btn.innerHTML = `<span class="dot" style="background:${p.dot}"></span>${p.label}`;
+    btn.onclick = () => selectPlatform(p);
+    el.appendChild(btn);
+  });
+}
+
+function selectPlatform(p) {
+  currentPlatform = p;
+  currentPage = 1;
+  allGames = [];
+  document.querySelectorAll('.platform-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.id === p.id);
+  });
+  fetchGames(true);
+}
+
+function changeSort() {
+  currentSort = document.getElementById('sortSelect').value;
+  currentPage = 1;
+  allGames = [];
+  fetchGames(true);
+}
+
+function loadMore() {
+  currentPage++;
+  fetchGames(false);
+}
+
+async function fetchGames(reset) {
+  const grid = document.getElementById('gameGrid');
+  const btn = document.getElementById('loadMoreBtn');
+
+  if (reset) {
+    grid.innerHTML = `<div class="loading" style="grid-column:1/-1"><div class="spinner"></div><span>Spiele werden geladen…</span></div>`;
+    btn.style.display = 'none';
+  } else {
+    btn.disabled = true;
+    btn.textContent = 'Wird geladen…';
+  }
+
+  const today = new Date();
+  const sixMonthsAgo = new Date();
+  sixMonthsAgo.setMonth(today.getMonth() - 6);
+  const dateFrom = sixMonthsAgo.toISOString().split('T')[0];
+  const dateTo = today.toISOString().split('T')[0];
+
+  let url = `https://api.rawg.io/api/games?key=${API_KEY}&dates=${dateFrom},${dateTo}&ordering=${currentSort}&page_size=20&page=${currentPage}`;
+
+  if (currentPlatform.id !== 'all' && !currentPlatform.virtual) {
+    url += `&platforms=${currentPlatform.id}`;
+  }
+
+  if (currentPlatform.virtual) {
+    url = `https://api.rawg.io/api/games?key=${API_KEY}&dates=2025-01-01,${dateTo}&ordering=${currentSort}&page_size=20&page=${currentPage}&platforms=7&tags=switch-2,nintendo-switch-2`;
+  }
+
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    totalCount = data.count || 0;
+
+    if (reset) {
+      allGames = data.results || [];
+      grid.innerHTML = '';
+    } else {
+      allGames = [...allGames, ...(data.results || [])];
+    }
+
+    if (allGames.length === 0) {
+      grid.innerHTML = `<div class="error-msg" style="grid-column:1/-1"><strong>Keine Spiele gefunden</strong>Versuche eine andere Plattform oder einen anderen Zeitraum.</div>`;
+    } else {
+      if (reset) grid.innerHTML = '';
+      renderCards(data.results || [], grid, reset);
+    }
+
+    document.getElementById('gameCount').textContent = `${totalCount.toLocaleString('de-DE')} Spiele`;
+
+    const hasMore = data.next && allGames.length < totalCount;
+    btn.style.display = hasMore ? 'block' : 'none';
+    btn.disabled = false;
+    btn.textContent = 'Mehr laden';
+
+  } catch (e) {
+    if (reset) {
+      grid.innerHTML = `<div class="error-msg" style="grid-column:1/-1">
+        <strong>Fehler beim Laden</strong>
+        RAWG API nicht erreichbar. Bitte Seite neu laden.<br><small>${e.message}</small>
+      </div>`;
+    }
+    btn.style.display = 'none';
+  }
+}
+
+function renderCards(games, grid) {
+  games.forEach(game => {
+    const card = document.createElement('div');
+    card.className = 'card';
+
+    const imgHtml = game.background_image
+      ? `<img class="card-img" src="${game.background_image}" alt="${escHtml(game.name)}" loading="lazy">`
+      : `<div class="card-img-placeholder">🎮</div>`;
+
+    const platform = detectPlatform(game);
+    const tagStyle = getPlatformStyle(platform);
+
+    const releaseDate = game.released
+      ? new Date(game.released).toLocaleDateString('de-DE', { day:'2-digit', month:'short', year:'numeric' })
+      : 'TBA';
+
+    const genres = game.genres?.map(g => g.name).join(', ') || '';
+    const rating = game.rating || 0;
+    const stars = ratingToStars(rating);
+    const ratingText = rating > 0 ? rating.toFixed(1) : '–';
+
+    const links = buildLinks(game, platform);
+
+    card.innerHTML = `
+      ${imgHtml}
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="platform-tag" style="${tagStyle}">${platform.label}</span>
+          <span class="release-date">${releaseDate}</span>
+        </div>
+        <div class="card-title">${escHtml(game.name)}</div>
+        ${genres ? `<div class="card-genres">${escHtml(genres)}</div>` : ''}
+        <div class="rating-row">
+          <span class="stars">${stars}</span>
+          <span class="rating-num">${ratingText}/5</span>
+        </div>
+      </div>
+      <div class="card-links">${links}</div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function detectPlatform(game) {
+  if (currentPlatform.id !== 'all') return currentPlatform;
+  const slugs = game.platforms?.map(p => p.platform.slug) || [];
+  if (slugs.includes('pc')) return PLATFORMS[1];
+  if (slugs.some(s => s.includes('playstation5') || s === 'playstation5')) return PLATFORMS[2];
+  if (slugs.some(s => s.includes('xbox'))) return PLATFORMS[3];
+  if (slugs.some(s => s.includes('nintendo-switch'))) return PLATFORMS[4];
+  return PLATFORMS[0];
+}
+
+function getPlatformStyle(p) {
+  return `background:${p.dot}22; color:${p.dot}; border:1px solid ${p.dot}44;`;
+}
+
+function buildLinks(game, platform) {
+  const name = game.name;
+  const encoded = encodeURIComponent(name);
+  let html = '';
+
+  if (platform.ig || (currentPlatform.id === 'all' && detectPlatform(game).id === '4')) {
+    const igUrl = `https://www.instant-gaming.com/de/recherche/?q=${encoded}${IG_REF}`;
+    html += `<a href="${igUrl}" target="_blank" rel="noopener" class="btn-link primary">
+      <span class="btn-icon">💰</span> Instant Gaming
+    </a>`;
+  }
+
+  if (platform.amazon || currentPlatform.id === 'all') {
+    const amzUrl = `https://www.amazon.de/s?k=${encoded}&tag=${AMAZON_TAG}`;
+    html += `<a href="${amzUrl}" target="_blank" rel="noopener" class="btn-link">
+      <span class="btn-icon">🛒</span> Amazon
+    </a>`;
+  }
+
+  if (!html) {
+    const amzUrl = `https://www.amazon.de/s?k=${encoded}&tag=${AMAZON_TAG}`;
+    html = `<a href="${amzUrl}" target="_blank" rel="noopener" class="btn-link">
+      <span class="btn-icon">🛒</span> Amazon
+    </a>`;
+  }
+
+  return html;
+}
+
+function ratingToStars(r) {
+  const full = Math.round(r);
+  return '★'.repeat(full) + '☆'.repeat(Math.max(0, 5 - full));
+}
+
+function escHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+buildControls();
+fetchGames(true);
+</script>
+</body>
+</html>
