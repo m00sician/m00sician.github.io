@@ -566,7 +566,7 @@ async function fetchSection(mode, reset) {
   if (platformParam) params.set('platforms', platformParam);
 
   try {
-    const res = await fetch(`/functions/games?${params}`);
+    const res = await fetch(`/api/games?${params}`);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     const games = data.results || [];
