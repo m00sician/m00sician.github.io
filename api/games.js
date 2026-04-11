@@ -1,14 +1,11 @@
-export async function onRequest(context) {
-  const CLIENT_ID = context.env.IGDB_CLIENT_ID;
-  const CLIENT_SECRET = context.env.IGDB_CLIENT_SECRET;
+export default async function handler(req, res) {
+  const CLIENT_ID = process.env.IGDB_CLIENT_ID;
+  const CLIENT_SECRET = process.env.IGDB_CLIENT_SECRET;
 
-  const headers = {
-    'Access-Control-Allow-Origin': '*',
-    'Content-Type': 'application/json',
-  };
+  res.setHeader('Access-Control-Allow-Origin', '*');
 
   if (!CLIENT_ID || !CLIENT_SECRET) {
-    return new Response(JSON.stringify({ error: 'API credentials not configured' }), { status: 500, headers });
+    return res.status(500).json({ error: 'API credentials not configured' });
   }
 
   try {
@@ -19,16 +16,12 @@ export async function onRequest(context) {
     const tokenData = await tokenRes.json();
     const accessToken = tokenData.access_token;
     if (!accessToken) {
-      return new Response(JSON.stringify({ error: 'Token fetch failed', detail: tokenData }), { status: 401, headers });
+      return res.status(401).json({ error: 'Token fetch failed', detail: tokenData });
     }
 
-    const url = new URL(context.request.url);
-    const params = Object.fromEntries(url.searchParams);
-    const platforms = params.platforms || null;
-    const mode = params.mode || 'recent';
-    const page = parseInt(params.page || '0');
+    const { platforms, mode = 'recent', page = '0' } = req.query;
     const limit = 20;
-    const offset = page * limit;
+    const offset = parseInt(page) * limit;
 
     const now = Math.floor(Date.now() / 1000);
     const twoWeeksAgo = now - (60 * 60 * 24 * 14);
@@ -76,7 +69,7 @@ export async function onRequest(context) {
 
     if (!igdbRes.ok) {
       const errText = await igdbRes.text();
-      return new Response(JSON.stringify({ error: 'IGDB error', detail: errText }), { status: igdbRes.status, headers });
+      return res.status(igdbRes.status).json({ error: 'IGDB error', detail: errText });
     }
 
     const games = await igdbRes.json();
@@ -91,12 +84,9 @@ export async function onRequest(context) {
       trailerVideoId: g.videos?.[0]?.video_id || null,
     }));
 
-    return new Response(
-      JSON.stringify({ results: processed, hasMore: games.length === limit }),
-      { status: 200, headers }
-    );
+    return res.status(200).json({ results: processed, hasMore: games.length === limit });
 
   } catch (err) {
-    return new Response(JSON.stringify({ error: err.message }), { status: 500, headers });
+    return res.status(500).json({ error: err.message });
   }
 }
