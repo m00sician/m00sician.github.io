@@ -267,6 +267,57 @@
   .grid.list-view .card-links { padding: 0.5rem 0.75rem 0.5rem 0; flex-direction: column; gap: 0.3rem; justify-content: center; min-width: 90px; }
   .grid.list-view .btn-link { padding: 5px 8px; font-size: 0.72rem; flex: unset; }
 
+  /* Info button */
+  .info-btn {
+    width: 28px; height: 28px; border-radius: 50%;
+    border: 1px solid var(--border); background: var(--surface);
+    color: var(--muted); font-family: 'Syne', sans-serif; font-size: 0.85rem;
+    font-weight: 700; cursor: pointer; transition: all 0.15s ease;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .info-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* Info modal */
+  .info-overlay {
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(6px); z-index: 2000; align-items: center; justify-content: center; padding: 1rem;
+  }
+  .info-overlay.open { display: flex; }
+  .info-modal {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg);
+    max-width: 560px; width: 100%; max-height: 85vh; overflow-y: auto; position: relative;
+    animation: modalIn 0.2s ease;
+  }
+  .info-modal-header {
+    padding: 1.5rem 1.5rem 1rem; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .info-modal-title { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; }
+  .info-modal-body { padding: 1.25rem 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+  .info-section-title { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 0.4rem; }
+  .info-text { font-size: 0.875rem; line-height: 1.7; color: var(--text); opacity: 0.85; }
+  .info-expand-btn {
+    display: flex; align-items: center; justify-content: space-between;
+    width: 100%; padding: 10px 14px; border-radius: var(--radius);
+    border: 1px solid var(--border); background: var(--surface2);
+    color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 0.85rem;
+    font-weight: 500; cursor: pointer; transition: all 0.15s ease;
+  }
+  .info-expand-btn:hover { border-color: var(--border-hover); }
+  .info-expand-btn .arrow { transition: transform 0.2s ease; font-size: 0.7rem; }
+  .info-expand-btn.open .arrow { transform: rotate(180deg); }
+  .info-publisher-list {
+    display: none; padding: 10px 14px; border: 1px solid var(--border);
+    border-top: none; border-radius: 0 0 var(--radius) var(--radius);
+    background: var(--surface2);
+  }
+  .info-publisher-list.open { display: block; }
+  .info-publisher-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 4px 12px;
+  }
+  .info-publisher-item { font-size: 0.78rem; color: var(--muted); padding: 2px 0; }
+
   footer { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.75rem; border-top: 1px solid var(--border); margin-top: 3rem; }
   footer a { color: var(--muted); }
   @media (max-width: 600px) { header { padding: 1.5rem 1rem; } main { padding: 1.25rem 1rem; } .grid { grid-template-columns: 1fr; } }
@@ -288,6 +339,7 @@
       <button class="view-btn" id="btnList" onclick="setView('list')" title="Listenansicht">☰</button>
     </div>
     <div class="live-badge"><span class="live-dot"></span>Live via IGDB</div>
+    <button class="info-btn" onclick="toggleInfo()" title="Wie funktioniert diese Seite?">?</button>
   </div>
 </header>
 
@@ -798,12 +850,101 @@ function setView(v) {
   document.querySelectorAll('.grid').forEach(g => g.classList.toggle('list-view', v === 'list'));
 }
 
+// Publisher list for info modal
+const WHITELIST_NAMES = [
+  'Nintendo','Sony Interactive Entertainment','Microsoft Studios','Electronic Arts',
+  'Ubisoft','Activision','Blizzard Entertainment','Square Enix','Konami','Capcom',
+  'Bandai Namco Entertainment','Sega','2K Games','Rockstar Games','Bethesda Softworks',
+  'Warner Bros. Interactive Entertainment','Take-Two Interactive','THQ Nordic',
+  'Koch Media','Deep Silver','CD Projekt','Remedy Entertainment','FromSoftware',
+  'Atlus','NIS America','Koei Tecmo','Marvelous','Arc System Works','SNK',
+  'Paradox Interactive','Coffee Stain Publishing','Focus Entertainment','505 Games',
+  'Team17','Devolver Digital','Curve Games','tinyBuild','11 bit studios',
+  'Annapurna Interactive','Behaviour Interactive','Tripwire Interactive','PlayWay',
+  'NEOWIZ','Starbreeze Studios','Thunderful','Dear Villagers','Twin Sails Interactive',
+  'Dotemu','3D Realms','Kepler Interactive','Hooded Horse','Daedalic Entertainment',
+  'Chucklefish','Raw Fury','Slitherine','Paradox Arc','Secret Mode',
+  'Wired Productions','Fellow Traveller','Microids','Headup','Maximum Entertainment',
+  'Toplitz Productions','HypeTrain Digital','Akupara Games','No More Robots','Digerati',
+  'Graffiti Games','Tribute Games','Forever Entertainment','Assemble Entertainment',
+  'Funcom','Modern Wolf','Square Enix Collective','Bigmode','Humble Games',
+  'Private Division','Frontier Foundry','Versus Evil','PID Games','Double Eleven',
+  'Playstack','Yogscast Games','Playtonic Games',
+];
+
+function toggleInfo() {
+  const overlay = document.getElementById('infoOverlay');
+  const isOpen = overlay.classList.toggle('open');
+  if (isOpen) {
+    document.body.style.overflow = 'hidden';
+    const grid = document.getElementById('publisherGrid');
+    if (!grid.children.length) {
+      WHITELIST_NAMES.sort().forEach(name => {
+        const div = document.createElement('div');
+        div.className = 'info-publisher-item';
+        div.textContent = name;
+        grid.appendChild(div);
+      });
+    }
+  } else {
+    document.body.style.overflow = '';
+  }
+}
+
+function closeInfoModal(e) {
+  if (e.target === document.getElementById('infoOverlay')) toggleInfo();
+}
+
+function togglePublisherList() {
+  const list = document.getElementById('publisherList');
+  const btn = document.getElementById('publisherExpandBtn');
+  list.classList.toggle('open');
+  btn.classList.toggle('open');
+}
+
 buildControls();
 updateButtonStates();
 setView('list');
 fetchSection('recent', true);
 fetchSection('upcoming', true);
 </script>
+<!-- Info Modal -->
+<div class="info-overlay" id="infoOverlay" onclick="closeInfoModal(event)">
+  <div class="info-modal">
+    <div class="info-modal-header">
+      <div class="info-modal-title">Wie funktioniert diese Seite?</div>
+      <button class="modal-close" onclick="toggleInfo()" style="position:static;">✕</button>
+    </div>
+    <div class="info-modal-body">
+      <div>
+        <div class="info-section-title">Datenquelle</div>
+        <div class="info-text">Alle Spieledaten werden live von <strong>IGDB</strong> (Internet Game Database) abgerufen — der größten Gaming-Datenbank, betrieben von Twitch/Amazon. Die Releases aktualisieren sich automatisch bei jedem Seitenaufruf.</div>
+      </div>
+      <div>
+        <div class="info-section-title">Welche Spiele werden angezeigt?</div>
+        <div class="info-text">Ein Spiel erscheint auf dieser Seite wenn mindestens eine dieser Bedingungen zutrifft:<br><br>
+          🔥 <strong>Mindestens 3 Hypes</strong> — Nutzer haben das Spiel vor Release auf ihre IGDB-Watchlist gesetzt<br>
+          ⭐ <strong>Mindestens 5 Bewertungen</strong> — Das Spiel hat bereits Reviews auf IGDB gesammelt<br>
+          🏢 <strong>Whitelisted Publisher</strong> — Das Spiel stammt von einem bekannten Publisher
+        </div>
+      </div>
+      <div>
+        <div class="info-section-title">Affiliate-Links</div>
+        <div class="info-text">Die Kauf-Buttons (Amazon & Instant Gaming) sind Affiliate-Links. Beim Kauf über diese Links erhalten wir eine kleine Provision — für dich entstehen keine Mehrkosten.</div>
+      </div>
+      <div>
+        <button class="info-expand-btn" id="publisherExpandBtn" onclick="togglePublisherList()">
+          <span>Whitelisted Publisher anzeigen</span>
+          <span class="arrow">▾</span>
+        </button>
+        <div class="info-publisher-list" id="publisherList">
+          <div class="info-publisher-grid" id="publisherGrid"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Game Detail Modal -->
 <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
   <div class="modal" id="modal">
