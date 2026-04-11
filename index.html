@@ -318,6 +318,26 @@
   }
   .info-publisher-item { font-size: 0.78rem; color: var(--muted); padding: 2px 0; }
 
+  /* Legal pages */
+  .legal-overlay {
+    display: none; position: fixed; inset: 0; background: var(--bg);
+    z-index: 3000; overflow-y: auto; padding: 2rem;
+  }
+  .legal-overlay.open { display: block; }
+  .legal-inner { max-width: 700px; margin: 0 auto; }
+  .legal-back {
+    display: inline-flex; align-items: center; gap: 6px; margin-bottom: 2rem;
+    color: var(--muted); font-size: 0.875rem; cursor: pointer; background: none;
+    border: none; font-family: 'DM Sans', sans-serif; transition: color 0.15s;
+  }
+  .legal-back:hover { color: var(--accent); }
+  .legal-title { font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 800; margin-bottom: 2rem; }
+  .legal-section { margin-bottom: 1.5rem; }
+  .legal-section h2 { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .legal-section p, .legal-section li { font-size: 0.875rem; line-height: 1.8; color: var(--text); opacity: 0.85; }
+  .legal-section ul { padding-left: 1.25rem; }
+  .legal-placeholder { color: var(--accent); font-weight: 600; }
+
   footer { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.75rem; border-top: 1px solid var(--border); margin-top: 3rem; }
   footer a { color: var(--muted); }
   @media (max-width: 600px) { header { padding: 1.5rem 1rem; } main { padding: 1.25rem 1rem; } .grid { grid-template-columns: 1fr; } }
@@ -417,7 +437,9 @@
 
 <footer>
   Spieldaten via <a href="https://www.igdb.com" target="_blank">IGDB</a> (powered by Twitch) &mdash;
-  Affiliate-Links: Amazon Partnerprogramm &amp; Instant Gaming
+  <span style="color:var(--accent)">Affiliate-Website:</span> Gekennzeichnete Links sind Affiliate-Links. Beim Kauf entstehen dir keine Mehrkosten.<br style="margin-bottom:0.5rem">
+  <a href="#" onclick="showPage('impressum')">Impressum</a> &mdash;
+  <a href="#" onclick="showPage('datenschutz')">Datenschutzerklärung</a>
 </footer>
 
 <script>
@@ -872,6 +894,78 @@ const WHITELIST_NAMES = [
   'Playstack','Yogscast Games','Playtonic Games',
 ];
 
+const LEGAL_PAGES = {
+  impressum: `
+    <div class="legal-title">Impressum</div>
+    <div class="legal-section">
+      <h2>Angaben gemäß § 5 TMG</h2>
+      <p>
+        <span class="legal-placeholder">[Vorname Nachname]</span><br>
+        <span class="legal-placeholder">[Straße Hausnummer]</span><br>
+        <span class="legal-placeholder">[PLZ]</span> Berlin
+      </p>
+    </div>
+    <div class="legal-section">
+      <h2>Kontakt</h2>
+      <p>E-Mail: <span class="legal-placeholder">[deine@email.de]</span></p>
+    </div>
+    <div class="legal-section">
+      <h2>Hinweis zu Affiliate-Links</h2>
+      <p>Diese Website enthält Affiliate-Links zu Amazon und Instant Gaming. Wenn du über diese Links einkaufst, erhalten wir eine kleine Provision. Für dich entstehen dabei keine zusätzlichen Kosten. Die redaktionelle Auswahl der vorgestellten Spiele erfolgt unabhängig davon.</p>
+    </div>
+    <div class="legal-section">
+      <h2>Haftung für Inhalte</h2>
+      <p>Die Inhalte dieser Seite wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen. Spieledaten werden automatisiert von IGDB (igdb.com) bezogen.</p>
+    </div>`,
+  datenschutz: `
+    <div class="legal-title">Datenschutzerklärung</div>
+    <div class="legal-section">
+      <h2>1. Verantwortlicher</h2>
+      <p>
+        <span class="legal-placeholder">[Vorname Nachname]</span><br>
+        <span class="legal-placeholder">[Straße Hausnummer]</span><br>
+        <span class="legal-placeholder">[PLZ]</span> Berlin<br>
+        E-Mail: <span class="legal-placeholder">[deine@email.de]</span>
+      </p>
+    </div>
+    <div class="legal-section">
+      <h2>2. Erhebung und Verarbeitung von Daten</h2>
+      <p>Diese Website erhebt selbst keine personenbezogenen Daten und setzt keine Cookies ein. Bei jedem Seitenaufruf werden jedoch automatisch technische Daten durch den Hosting-Anbieter (Vercel Inc.) erfasst, darunter IP-Adresse, Datum/Uhrzeit und aufgerufene Seiten.</p>
+    </div>
+    <div class="legal-section">
+      <h2>3. Externe Dienste</h2>
+      <ul>
+        <li><strong>IGDB / Twitch:</strong> Spieledaten werden von api.igdb.com abgerufen. Dabei wird deine IP-Adresse an Twitch Interactive Inc. übermittelt. Datenschutzerklärung: twitch.tv/p/de-de/legal/privacy-notice</li>
+        <li><strong>Google Fonts:</strong> Diese Website lädt Schriften von Google-Servern (fonts.googleapis.com). Dabei wird deine IP-Adresse an Google LLC übermittelt. Datenschutzerklärung: policies.google.com/privacy</li>
+        <li><strong>Amazon Partnerprogramm:</strong> Links zu amazon.de sind Affiliate-Links. Amazon kann beim Klick Cookies setzen. Datenschutzerklärung: amazon.de/gp/help/customer/display.html?nodeId=GX7NJQ4ZB8MHFRNJ</li>
+        <li><strong>Instant Gaming:</strong> Links zu instant-gaming.com sind Affiliate-Links. Datenschutzerklärung: instant-gaming.com/de/datenschutz</li>
+        <li><strong>Vercel:</strong> Hosting-Anbieter dieser Website. Datenschutzerklärung: vercel.com/legal/privacy-policy</li>
+      </ul>
+    </div>
+    <div class="legal-section">
+      <h2>4. Deine Rechte</h2>
+      <p>Du hast das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung deiner Daten sowie das Recht auf Datenübertragbarkeit. Wende dich dazu an die oben genannte E-Mail-Adresse.</p>
+    </div>
+    <div class="legal-section">
+      <h2>5. Beschwerderecht</h2>
+      <p>Du hast das Recht, dich bei einer Datenschutz-Aufsichtsbehörde zu beschweren. Die zuständige Behörde für Berlin ist der Berliner Beauftragte für Datenschutz und Informationsfreiheit (datenschutz-berlin.de).</p>
+    </div>`
+};
+
+function showPage(page) {
+  const overlay = document.getElementById('legalOverlay');
+  const content = document.getElementById('legalContent');
+  content.innerHTML = '<button class="legal-back" onclick="closeLegalPage()">← Zurück</button>' + LEGAL_PAGES[page];
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  window.scrollTo(0,0);
+}
+
+function closeLegalPage() {
+  document.getElementById('legalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
 function toggleInfo() {
   const overlay = document.getElementById('infoOverlay');
   const isOpen = overlay.classList.toggle('open');
@@ -908,6 +1002,11 @@ setView('list');
 fetchSection('recent', true);
 fetchSection('upcoming', true);
 </script>
+<!-- Legal Pages -->
+<div class="legal-overlay" id="legalOverlay">
+  <div class="legal-inner" id="legalContent"></div>
+</div>
+
 <!-- Info Modal -->
 <div class="info-overlay" id="infoOverlay" onclick="closeInfoModal(event)">
   <div class="info-modal">
