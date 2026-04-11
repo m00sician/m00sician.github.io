@@ -51,7 +51,7 @@ export default async function handler(req, res) {
 
     const query = `
       fields name, cover.url, first_release_date, genres.name, platforms.name, platforms.slug, platforms.id, videos.video_id, summary, hypes, rating_count, involved_companies.developer, involved_companies.publisher, involved_companies.company.name, involved_companies.company.slug;
-      where ${dateFilter} & cover != null & (hypes > 0 | total_rating_count > 5 | involved_companies.company = (${WHITELIST})) ${platformFilter};
+      where ${dateFilter} & cover != null & (hypes > 2 | total_rating_count > 5 | involved_companies.company = (${WHITELIST})) ${platformFilter};
       sort ${sortOrder};
       limit ${limit};
       offset ${offset};
