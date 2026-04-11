@@ -21,416 +21,346 @@
     --radius: 12px;
     --radius-lg: 18px;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
+  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; overflow-x: hidden; }
   body::before {
-    content: '';
-    position: fixed;
-    top: -200px; left: 50%;
-    transform: translateX(-50%);
+    content: ''; position: fixed; top: -200px; left: 50%; transform: translateX(-50%);
     width: 800px; height: 600px;
     background: radial-gradient(ellipse, rgba(200,255,62,0.04) 0%, transparent 70%);
-    pointer-events: none;
-    z-index: 0;
+    pointer-events: none; z-index: 0;
   }
-
   header {
-    position: relative;
-    z-index: 10;
-    padding: 2.5rem 2rem 2rem;
+    position: relative; z-index: 10; padding: 2.5rem 2rem 2rem;
     border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 1rem;
-    max-width: 1400px;
-    margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+    max-width: 1400px; margin: 0 auto;
   }
-
-  .logo {
-    font-family: 'Syne', sans-serif;
-    font-size: 1.6rem;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    color: var(--text);
-  }
-
+  .logo { font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 800; letter-spacing: -0.02em; }
   .logo span { color: var(--accent); }
-
-  .tagline {
-    font-size: 0.8rem;
-    color: var(--muted);
-    margin-top: 2px;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-  }
-
+  .tagline { font-size: 0.8rem; color: var(--muted); margin-top: 2px; letter-spacing: 0.05em; text-transform: uppercase; }
   .live-badge {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.75rem;
-    color: var(--accent);
-    background: var(--accent-dim);
-    border: 1px solid rgba(200,255,62,0.3);
-    padding: 5px 12px;
-    border-radius: 999px;
-    font-weight: 500;
+    display: flex; align-items: center; gap: 6px; font-size: 0.75rem;
+    color: var(--accent); background: var(--accent-dim); border: 1px solid rgba(200,255,62,0.3);
+    padding: 5px 12px; border-radius: 999px; font-weight: 500;
   }
+  .live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  main { max-width: 1400px; margin: 0 auto; padding: 2rem; position: relative; z-index: 1; }
 
-  .live-dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--accent);
-    animation: pulse 2s infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-  }
-
-  main {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 2rem;
-    position: relative;
-    z-index: 1;
-  }
-
-  .controls {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-    margin-bottom: 2.5rem;
-  }
-
+  /* Platform filter */
+  .controls { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 2rem; }
   .platform-btn {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 18px;
-    border-radius: 999px;
-    border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--muted);
-    cursor: pointer;
+    display: flex; align-items: center; gap: 8px; padding: 8px 18px;
+    border-radius: 999px; border: 1px solid var(--border); background: var(--surface);
+    color: var(--muted); cursor: pointer; font-family: 'DM Sans', sans-serif;
+    font-size: 0.875rem; font-weight: 500; transition: all 0.18s ease; user-select: none;
+  }
+  .platform-btn:hover { border-color: var(--border-hover); color: var(--text); }
+  .platform-btn.active { background: var(--accent); border-color: var(--accent); color: var(--accent-text); font-weight: 600; }
+  .platform-btn .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+  /* Section headers */
+  .section-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin: 2rem 0 1.25rem; flex-wrap: wrap; gap: 0.75rem;
+  }
+  .section-label {
+    font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-label .badge {
+    font-size: 0.7rem; font-weight: 600; padding: 3px 10px; border-radius: 999px;
+    background: var(--accent-dim); color: var(--accent); border: 1px solid rgba(200,255,62,0.3);
     font-family: 'DM Sans', sans-serif;
-    font-size: 0.875rem;
-    font-weight: 500;
-    transition: all 0.18s ease;
-    user-select: none;
   }
+  .section-label .badge.upcoming { background: rgba(99,153,255,0.12); color: #6399ff; border-color: rgba(99,153,255,0.3); }
 
-  .platform-btn:hover {
-    border-color: var(--border-hover);
-    color: var(--text);
+  /* Older releases toggle */
+  .older-toggle {
+    display: flex; align-items: center; gap: 10px; margin: 3rem 0 1.5rem;
+    cursor: pointer; user-select: none;
   }
-
-  .platform-btn.active {
-    color: var(--accent-text);
-    background: var(--accent);
-    border-color: var(--accent);
-    font-weight: 600;
+  .older-toggle-line { flex: 1; height: 1px; background: var(--border); }
+  .older-toggle-btn {
+    display: flex; align-items: center; gap: 8px; padding: 9px 20px;
+    border: 1px solid var(--border); border-radius: 999px; background: var(--surface);
+    color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: 0.85rem;
+    font-weight: 500; cursor: pointer; transition: all 0.18s ease; white-space: nowrap;
   }
+  .older-toggle-btn:hover { border-color: var(--border-hover); color: var(--text); }
+  .older-toggle-btn .arrow { transition: transform 0.2s ease; display: inline-block; }
+  .older-toggle-btn.open .arrow { transform: rotate(180deg); }
 
-  .platform-btn .dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-
-  .sort-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-
-  .section-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--text);
-  }
-
-  .section-title span {
-    color: var(--muted);
-    font-weight: 400;
-    font-size: 0.85rem;
-    margin-left: 8px;
-  }
-
-  select {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 7px 14px;
-    border-radius: var(--radius);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.85rem;
-    cursor: pointer;
-    outline: none;
-  }
-
-  select:hover { border-color: var(--border-hover); }
-
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 1.25rem;
-  }
-
+  /* Cards */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.25rem; }
   .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    transition: transform 0.2s ease, border-color 0.2s ease;
-    display: flex;
-    flex-direction: column;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); overflow: hidden;
+    transition: transform 0.2s ease, border-color 0.2s ease; display: flex; flex-direction: column;
   }
-
-  .card:hover {
-    transform: translateY(-3px);
-    border-color: var(--border-hover);
+  .card:hover { transform: translateY(-3px); border-color: var(--border-hover); }
+  .card-img-wrap { position: relative; }
+  .hype-badge {
+    position: absolute; top: 8px; right: 8px;
+    background: rgba(0,0,0,0.75); backdrop-filter: blur(4px);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 999px; padding: 3px 8px;
+    font-size: 0.68rem; font-weight: 600; color: #f0f0f8;
+    display: flex; align-items: center; gap: 3px; white-space: nowrap;
   }
-
-  .card-img {
-    width: 100%;
-    aspect-ratio: 3/4;
-    object-fit: cover;
-    display: block;
-    background: var(--surface2);
-  }
-
+  .hype-badge.hot { border-color: rgba(255,100,50,0.4); color: #ff8055; }
+  .card-img { width: 100%; aspect-ratio: 3/4; object-fit: cover; display: block; background: var(--surface2); }
   .card-img-placeholder {
-    width: 100%;
-    aspect-ratio: 3/4;
-    background: var(--surface2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--muted);
-    font-size: 2rem;
+    width: 100%; aspect-ratio: 3/4; background: var(--surface2);
+    display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 2rem;
   }
-
-  .card-body {
-    padding: 1rem 1.1rem;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .card-meta {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-
-  .platform-tags {
-    display: flex;
-    gap: 4px;
-    flex-wrap: wrap;
-  }
-
+  .card-body { padding: 1rem 1.1rem; flex: 1; display: flex; flex-direction: column; gap: 0.45rem; }
+  .card-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+  .platform-tags { display: flex; gap: 4px; flex-wrap: wrap; }
   .platform-tag {
-    font-size: 0.7rem;
-    font-weight: 600;
-    padding: 3px 9px;
-    border-radius: 999px;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    white-space: nowrap;
+    font-size: 0.68rem; font-weight: 600; padding: 2px 8px; border-radius: 999px;
+    text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap;
   }
-
-  .release-date {
-    font-size: 0.75rem;
-    color: var(--muted);
-    white-space: nowrap;
-  }
-
-  .card-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 1rem;
-    font-weight: 700;
-    line-height: 1.3;
-    color: var(--text);
-  }
-
-  .card-genres {
-    font-size: 0.75rem;
-    color: var(--muted);
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
-
-  .rating-row {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-top: auto;
-    padding-top: 0.5rem;
-  }
-
-  .stars { color: #f59e0b; font-size: 0.75rem; letter-spacing: 1px; }
-  .rating-num { font-size: 0.75rem; color: var(--muted); }
-
-  .card-links {
-    padding: 0 1.1rem 1rem;
-    display: flex;
-    gap: 0.5rem;
-  }
-
+  .release-date { font-size: 0.75rem; color: var(--muted); white-space: nowrap; }
+  .card-title { font-family: 'Syne', sans-serif; font-size: 0.95rem; font-weight: 700; line-height: 1.3; }
+  .card-genres { font-size: 0.73rem; color: var(--muted); overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+  .card-links { padding: 0 1.1rem 1rem; display: flex; gap: 0.5rem; margin-top: auto; }
   .btn-link {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    padding: 8px 10px;
-    border-radius: var(--radius);
-    font-size: 0.8rem;
-    font-weight: 600;
-    font-family: 'DM Sans', sans-serif;
-    text-decoration: none;
-    border: 1px solid var(--border);
-    background: var(--surface2);
-    color: var(--text);
-    transition: all 0.15s ease;
-    white-space: nowrap;
+    flex: 1; display: flex; align-items: center; justify-content: center; gap: 5px;
+    padding: 8px 8px; border-radius: var(--radius); font-size: 0.78rem; font-weight: 600;
+    font-family: 'DM Sans', sans-serif; text-decoration: none;
+    border: 1px solid var(--border); background: var(--surface2); color: var(--text);
+    transition: all 0.15s ease; white-space: nowrap; cursor: pointer;
+  }
+  .btn-link:hover { background: var(--surface); border-color: var(--border-hover); color: var(--accent); }
+  .btn-link.primary { background: var(--accent-dim); border-color: rgba(200,255,62,0.3); color: var(--accent); }
+  .btn-link.primary:hover { background: var(--accent); color: var(--accent-text); }
+  .btn-link.trailer { background: rgba(255,50,50,0.08); border-color: rgba(255,50,50,0.25); color: #ff5555; }
+  .btn-link.trailer:hover { background: rgba(255,50,50,0.18); color: #ff3333; }
+
+  /* Upcoming label */
+  .upcoming-pill {
+    display: inline-block; font-size: 0.68rem; font-weight: 600; padding: 2px 8px;
+    border-radius: 999px; background: rgba(99,153,255,0.12); color: #6399ff;
+    border: 1px solid rgba(99,153,255,0.3); margin-left: 4px;
   }
 
-  .btn-link:hover {
-    background: var(--surface);
-    border-color: var(--border-hover);
-    color: var(--accent);
+  /* Options dropdown */
+  .options-wrap { position: relative; margin-bottom: 1.5rem; }
+  .options-btn {
+    display: flex; align-items: center; gap: 8px; padding: 8px 16px;
+    border: 1px solid var(--border); border-radius: 999px; background: var(--surface);
+    color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: 0.875rem;
+    font-weight: 500; cursor: pointer; transition: all 0.18s ease; user-select: none;
   }
-
-  .btn-link.primary {
-    background: var(--accent-dim);
-    border-color: rgba(200,255,62,0.3);
-    color: var(--accent);
+  .options-btn:hover, .options-btn.open { border-color: var(--border-hover); color: var(--text); }
+  .options-btn .arrow { transition: transform 0.2s ease; display: inline-block; font-size: 0.7rem; }
+  .options-btn.open .arrow { transform: rotate(180deg); }
+  .options-btn .active-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: none; }
+  .options-btn.has-active .active-dot { display: block; }
+  .options-panel {
+    display: none; position: absolute; top: calc(100% + 8px); left: 0;
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg);
+    padding: 0.75rem; min-width: 240px; z-index: 100;
   }
-
-  .btn-link.primary:hover {
-    background: var(--accent);
-    color: var(--accent-text);
+  .options-panel.open { display: block; }
+  .opt-section { font-size: 0.7rem; font-weight: 600; color: var(--muted); text-transform: uppercase;
+    letter-spacing: 0.06em; padding: 4px 6px 8px; }
+  .opt-divider { height: 1px; background: var(--border); margin: 8px 0; }
+  .opt-row {
+    display: flex; align-items: center; gap: 10px; padding: 7px 8px; border-radius: var(--radius);
+    cursor: pointer; transition: background 0.12s ease; user-select: none;
   }
-
-  .loading {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 5rem 2rem;
-    gap: 1rem;
-    color: var(--muted);
+  .opt-row:hover { background: var(--surface2); }
+  .opt-row.disabled { opacity: 0.35; cursor: not-allowed; pointer-events: none; }
+  .opt-box {
+    width: 17px; height: 17px; border-radius: 4px; border: 1.5px solid var(--border);
+    background: var(--surface2); display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; transition: all 0.15s ease;
   }
+  .opt-row.checked .opt-box { background: var(--accent); border-color: var(--accent); }
+  .opt-check { display: none; color: var(--accent-text); font-size: 10px; font-weight: 700; }
+  .opt-row.checked .opt-check { display: block; }
+  .opt-label { font-size: 0.85rem; color: var(--text); }
+  .opt-desc { font-size: 0.72rem; color: var(--muted); margin-top: 1px; }
 
-  .spinner {
-    width: 36px; height: 36px;
-    border: 2px solid var(--border);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
+  /* Search + Genre bar */
+  .search-genre-row { display: flex; gap: 0.75rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .search-wrap { position: relative; flex: 1; min-width: 180px; }
+  .search-wrap svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 15px; height: 15px; color: var(--muted); pointer-events: none; }
+  .search-input {
+    width: 100%; padding: 8px 12px 8px 36px; border-radius: 999px;
+    border: 1px solid var(--border); background: var(--surface); color: var(--text);
+    font-family: 'DM Sans', sans-serif; font-size: 0.875rem; outline: none; transition: border-color 0.15s;
   }
+  .search-input::placeholder { color: var(--muted); }
+  .search-input:focus { border-color: var(--border-hover); }
+  .genre-select {
+    padding: 8px 14px; border-radius: 999px; border: 1px solid var(--border);
+    background: var(--surface); color: var(--muted); font-family: 'DM Sans', sans-serif;
+    font-size: 0.875rem; cursor: pointer; outline: none; transition: border-color 0.15s;
+  }
+  .genre-select:focus, .genre-select.active { border-color: var(--accent); color: var(--accent); }
 
+  /* Modal */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(6px); z-index: 1000; align-items: center; justify-content: center; padding: 1rem;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg);
+    max-width: 680px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative;
+    animation: modalIn 0.2s ease;
+  }
+  @keyframes modalIn { from { opacity: 0; transform: scale(0.96) translateY(8px); } to { opacity: 1; transform: none; } }
+  .modal-close {
+    position: absolute; top: 1rem; right: 1rem; background: var(--surface2); border: 1px solid var(--border);
+    color: var(--muted); width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
+    font-size: 1rem; display: flex; align-items: center; justify-content: center; z-index: 10;
+    transition: all 0.15s;
+  }
+  .modal-close:hover { color: var(--text); border-color: var(--border-hover); }
+  .modal-cover { width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: var(--radius-lg) var(--radius-lg) 0 0; display: block; background: var(--surface2); }
+  .modal-cover-placeholder { width: 100%; aspect-ratio: 16/9; background: var(--surface2); display: flex; align-items: center; justify-content: center; font-size: 3rem; border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
+  .modal-body { padding: 1.5rem; }
+  .modal-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 0.75rem; }
+  .modal-title { font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 800; margin-bottom: 0.5rem; line-height: 1.2; }
+  .modal-genres { font-size: 0.8rem; color: var(--muted); margin-bottom: 1rem; }
+  .modal-summary { font-size: 0.875rem; line-height: 1.7; color: var(--text); margin-bottom: 1.5rem; opacity: 0.85; }
+  .modal-links { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+  .modal-links .btn-link { flex: unset; padding: 10px 18px; font-size: 0.85rem; }
+
+  /* Loading / error */
+  .loading { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4rem 2rem; gap: 1rem; color: var(--muted); }
+  .spinner { width: 32px; height: 32px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
-
-  .error-msg {
-    text-align: center;
-    padding: 3rem;
-    color: var(--muted);
-    font-size: 0.9rem;
-  }
-
-  .error-msg strong { color: var(--text); display: block; margin-bottom: 0.5rem; font-size: 1rem; }
-
+  .error-msg { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.9rem; }
+  .error-msg strong { color: var(--text); display: block; margin-bottom: 0.5rem; }
   .load-more {
-    display: block;
-    margin: 2.5rem auto 0;
-    padding: 12px 32px;
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--text);
-    border-radius: 999px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
+    display: block; margin: 2rem auto 0; padding: 11px 30px;
+    background: transparent; border: 1px solid var(--border); color: var(--text);
+    border-radius: 999px; font-family: 'DM Sans', sans-serif; font-size: 0.875rem;
+    font-weight: 500; cursor: pointer; transition: all 0.2s ease;
   }
-
   .load-more:hover { border-color: var(--accent); color: var(--accent); }
   .load-more:disabled { opacity: 0.4; cursor: not-allowed; }
-
-  footer {
-    text-align: center;
-    padding: 2rem;
-    color: var(--muted);
-    font-size: 0.75rem;
-    border-top: 1px solid var(--border);
-    margin-top: 3rem;
+  /* View toggle */
+  .view-toggle { display: flex; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .view-btn {
+    background: transparent; border: none; color: var(--muted); padding: 7px 12px;
+    cursor: pointer; font-size: 1rem; line-height: 1; transition: all 0.15s ease;
   }
+  .view-btn:hover { color: var(--text); background: var(--surface2); }
+  .view-btn.active { background: var(--surface2); color: var(--accent); }
 
+  /* List view */
+  .grid.list-view { grid-template-columns: 1fr; gap: 0.5rem; }
+  .grid.list-view .card {
+    flex-direction: row; border-radius: var(--radius); max-height: 80px;
+  }
+  .grid.list-view .card-img { width: 54px; height: 80px; aspect-ratio: unset; flex-shrink: 0; border-radius: 0; }
+  .grid.list-view .card-img-placeholder { width: 54px; height: 80px; aspect-ratio: unset; flex-shrink: 0; font-size: 1.2rem; }
+  .grid.list-view .card-body { padding: 0.5rem 0.75rem; gap: 0.2rem; justify-content: center; }
+  .grid.list-view .card-title { font-size: 0.88rem; }
+  .grid.list-view .card-genres { display: none; }
+  .grid.list-view .card-links { padding: 0.5rem 0.75rem 0.5rem 0; flex-direction: column; gap: 0.3rem; justify-content: center; min-width: 90px; }
+  .grid.list-view .btn-link { padding: 5px 8px; font-size: 0.72rem; flex: unset; }
+
+  footer { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.75rem; border-top: 1px solid var(--border); margin-top: 3rem; }
   footer a { color: var(--muted); }
-
-  @media (max-width: 600px) {
-    header { padding: 1.5rem 1rem; }
-    main { padding: 1.5rem 1rem; }
-    .grid { grid-template-columns: 1fr; }
-  }
+  @media (max-width: 600px) { header { padding: 1.5rem 1rem; } main { padding: 1.25rem 1rem; } .grid { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
-
 <header>
   <div>
     <div class="logo">neue<span>spiele</span>.info</div>
     <div class="tagline">Aktuelle Releases · Täglich aktualisiert</div>
   </div>
-  <div class="live-badge">
-    <span class="live-dot"></span>
-    Live-Daten via IGDB
+  <div style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;">
+    <div class="search-wrap" style="min-width:160px;max-width:220px;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input class="search-input" id="searchInput" type="text" placeholder="Suchen…" oninput="onSearch()">
+    </div>
+    <div class="view-toggle">
+      <button class="view-btn active" id="btnGrid" onclick="setView('grid')" title="Rasteransicht">⊞</button>
+      <button class="view-btn" id="btnList" onclick="setView('list')" title="Listenansicht">☰</button>
+    </div>
+    <div class="live-badge"><span class="live-dot"></span>Live via IGDB</div>
   </div>
 </header>
 
 <main>
   <div class="controls" id="platformControls"></div>
 
-  <div class="sort-row">
-    <div class="section-title">
-      Neue Releases
-      <span id="gameCount"></span>
+  <!-- Options Dropdown -->
+  <div class="options-wrap" id="optionsWrap">
+    <button class="options-btn" id="optionsBtn" onclick="toggleOptionsPanel()">
+      <span class="active-dot"></span>
+      Optionen
+      <span class="arrow">▾</span>
+    </button>
+    <div class="options-panel" id="optionsPanel">
+      <div class="opt-section">Anzeige</div>
+      <div class="opt-row" id="optExclusive" onclick="toggleOptExclusive()">
+        <div class="opt-box"><span class="opt-check">✓</span></div>
+        <div><div class="opt-label">Nur Exklusivtitel</div><div class="opt-desc">Spiele mit nur einer Plattform</div></div>
+      </div>
+      <div class="opt-divider"></div>
+      <div class="opt-section">Hype-Level</div>
+      <div class="opt-row checked" id="optPop_low" onclick="toggleOptPop('low')">
+        <div class="opt-box"><span class="opt-check">✓</span></div>
+        <div><div class="opt-label">🔥 Wenig Hype</div><div class="opt-desc">Kaum bekannte Titel</div></div>
+      </div>
+      <div class="opt-row checked" id="optPop_mid" onclick="toggleOptPop('mid')">
+        <div class="opt-box"><span class="opt-check">✓</span></div>
+        <div><div class="opt-label">🔥🔥 Mittlerer Hype</div><div class="opt-desc">Wachsende Community</div></div>
+      </div>
+      <div class="opt-row checked" id="optPop_high" onclick="toggleOptPop('high')">
+        <div class="opt-box"><span class="opt-check">✓</span></div>
+        <div><div class="opt-label">🔥🔥🔥 Viel Hype</div><div class="opt-desc">Heiß ersehnte Titel</div></div>
+      </div>
+      <div class="opt-divider"></div>
+      <div class="opt-section">Genre</div>
+      <div style="padding: 4px 8px 8px;">
+        <select class="genre-select" id="genreSelect" onchange="onGenre()" style="width:100%;border-radius:var(--radius);padding:7px 10px;">
+          <option value="">Alle Genres</option>
+        </select>
+      </div>
     </div>
-    <select id="sortSelect" onchange="changeSort()">
-      <option value="first_release_date desc">Neueste zuerst</option>
-      <option value="rating desc">Beste Bewertung</option>
-      <option value="name asc">Alphabetisch</option>
-    </select>
   </div>
 
-  <div id="gameGrid" class="grid"></div>
-  <button class="load-more" id="loadMoreBtn" onclick="loadMore()" style="display:none">
-    Mehr laden
-  </button>
+  <!-- Neue Releases (letzte 2 Wochen) -->
+  <div class="section-header">
+    <div class="section-label">Neue Releases <span class="badge">Letzte 2 Wochen</span></div>
+  </div>
+  <div id="recentGrid" class="grid"></div>
+  <button class="load-more" id="recentMoreBtn" onclick="loadMore('recent')" style="display:none">Mehr laden</button>
+
+  <!-- Upcoming -->
+  <div class="section-header" style="margin-top:3rem">
+    <div class="section-label">Demnächst <span class="badge upcoming">Kommende Releases</span></div>
+  </div>
+  <div id="upcomingGrid" class="grid"></div>
+  <button class="load-more" id="upcomingMoreBtn" onclick="loadMore('upcoming')" style="display:none">Mehr laden</button>
+
+  <!-- Ältere Releases Toggle -->
+  <div class="older-toggle" onclick="toggleOlder()">
+    <div class="older-toggle-line"></div>
+    <button class="older-toggle-btn" id="olderToggleBtn">
+      <span>Ältere Releases anzeigen</span>
+      <span class="arrow">▾</span>
+    </button>
+    <div class="older-toggle-line"></div>
+  </div>
+  <div id="olderSection" style="display:none">
+    <div class="section-header">
+      <div class="section-label">Ältere Releases <span class="badge">Letzte 12 Monate</span></div>
+    </div>
+    <div id="olderGrid" class="grid"></div>
+    <button class="load-more" id="olderMoreBtn" onclick="loadMore('older')" style="display:none">Mehr laden</button>
+  </div>
 </main>
 
 <footer>
@@ -439,23 +369,101 @@
 </footer>
 
 <script>
-const AMAZON_TAG = 'DEIN-AMAZON-TAG'; // <-- deinen Amazon Affiliate Tag eintragen
+const AMAZON_TAG = 'you082-21';
 const IG_REF = '&igr=m00sician';
 
-// IGDB Platform IDs
 const PLATFORMS = [
-  { id: 'all',   label: 'Alle',             igdbId: null,  dot: '#888899', ig: false },
-  { id: '6',     label: 'PC / Steam',       igdbId: '6',   dot: '#1b9ced', ig: true  },
-  { id: '167',   label: 'PlayStation 5',    igdbId: '167', dot: '#003791', ig: false },
-  { id: '169',   label: 'Xbox Series X|S',  igdbId: '169', dot: '#107c10', ig: false },
-  { id: '130',   label: 'Nintendo Switch',  igdbId: '130', dot: '#e4000f', ig: false },
-  { id: '471',   label: 'Switch 2',         igdbId: '471', dot: '#ff6b00', ig: false },
+  { id: 'all',  label: 'Alle',            igdbId: null,           dot: '#888899', ig: false },
+  { id: '6',    label: 'PC / Steam',      igdbId: '6',            dot: '#1b9ced', ig: true  },
+  { id: '48',   label: 'PlayStation 4',   igdbId: '48',           dot: '#1a5fa8', ig: false },
+  { id: '167',  label: 'PlayStation 5',   igdbId: '167',          dot: '#003791', ig: false },
+  { id: '169',  label: 'Xbox Series X|S', igdbId: '169',          dot: '#107c10', ig: false },
+  { id: '130',  label: 'Switch',          igdbId: '130',          dot: '#e4000f', ig: false },
+  { id: '471',  label: 'Switch 2',        igdbId: '508',          dot: '#ff6b00', ig: false },
+  { id: 'vr',   label: 'VR / Sonstiges',  igdbId: '162,165,386,471', dot: '#9b6dff', ig: false },
 ];
 
-let currentPlatform = PLATFORMS[0];
-let currentSort = 'first_release_date desc';
-let currentPage = 0;
-let allGames = [];
+function getPlatformStyle(slug, name) {
+  const s = slug || '';
+  const n = (name || '').toLowerCase();
+  if (s.includes('playstation5') || n.includes('playstation 5')) return { color: '#003791', label: 'PS5' };
+  if (s.includes('playstation4') || n.includes('playstation 4')) return { color: '#003791', label: 'PS4' };
+  if (s.includes('playstation3') || n.includes('playstation 3')) return { color: '#003791', label: 'PS3' };
+  if (s.includes('playstation2') || n.includes('playstation 2')) return { color: '#003791', label: 'PS2' };
+  if (s.includes('vita') || n.includes('vita'))                  return { color: '#003791', label: 'PS Vita' };
+  if (s.includes('psp') || n.includes('psp'))                    return { color: '#003791', label: 'PSP' };
+  if (s.includes('playstation') || n.includes('playstation'))    return { color: '#003791', label: 'PS' };
+  if (s.includes('series') || n.includes('series x') || n.includes('series s')) return { color: '#107c10', label: 'Xbox' };
+  if (s.includes('xbox-one') || n.includes('xbox one'))          return { color: '#107c10', label: 'Xbox One' };
+  if (s.includes('xbox360') || n.includes('xbox 360'))           return { color: '#107c10', label: 'Xbox 360' };
+  if (s.includes('xbox') || n.includes('xbox'))                  return { color: '#107c10', label: 'Xbox' };
+  if (s.includes('switch-2') || n.includes('switch 2'))          return { color: '#ff6b00', label: 'Switch 2' };
+  if (s.includes('switch') || n.includes('switch'))              return { color: '#e4000f', label: 'Switch' };
+  if (s.includes('wii-u') || n.includes('wii u'))                return { color: '#009ac7', label: 'Wii U' };
+  if (s.includes('wii') || n.includes('wii'))                    return { color: '#009ac7', label: 'Wii' };
+  if (s.includes('3ds') || n.includes('3ds'))                    return { color: '#cc0000', label: '3DS' };
+  if (s.includes('nintendo-ds') || n.includes('nintendo ds'))    return { color: '#cc0000', label: 'DS' };
+  if (s === 'pc' || n === 'pc (microsoft windows)' || n.includes('windows')) return { color: '#1b9ced', label: 'PC' };
+  if (s.includes('mac') || n.includes('mac'))                    return { color: '#aaaaaa', label: 'Mac' };
+  if (s.includes('linux') || n.includes('linux'))                return { color: '#e8a020', label: 'Linux' };
+  if (s.includes('android') || n.includes('android'))            return { color: '#3ddc84', label: 'Android' };
+  if (s.includes('ios') || n.includes('ios'))                    return { color: '#888888', label: 'iOS' };
+  return { color: '#888899', label: name?.split(' ').slice(0,2).join(' ') || '?' };
+}
+
+// Multi-select state: Set of active platform IDs (never mix 'all' with others)
+let activePlatforms = new Set(['all']);
+
+const pages = { recent: 0, upcoming: 0, older: 0 };
+const cachedGames = { recent: [], upcoming: [], older: [] };
+let olderLoaded = false;
+let showExclusiveOnly = false;
+// Hype tiers based on hypes field (upcoming) or rating_count (released)
+// 🔥 = low (0-4 hypes / 0-19 rating_count)
+// 🔥🔥 = mid (5-19 / 20-99)
+// 🔥🔥🔥 = high (20+ / 100+)
+const popFilters = { low: true, mid: true, high: true };
+
+function toggleOptionsPanel() {
+  const panel = document.getElementById('optionsPanel');
+  const btn = document.getElementById('optionsBtn');
+  const open = panel.classList.toggle('open');
+  btn.classList.toggle('open', open);
+}
+
+// Close panel when clicking outside
+document.addEventListener('click', e => {
+  const wrap = document.getElementById('optionsWrap');
+  if (wrap && !wrap.contains(e.target)) {
+    document.getElementById('optionsPanel')?.classList.remove('open');
+    document.getElementById('optionsBtn')?.classList.remove('open');
+  }
+});
+
+function toggleOptExclusive() {
+  showExclusiveOnly = !showExclusiveOnly;
+  document.getElementById('optExclusive').classList.toggle('checked', showExclusiveOnly);
+  updateOptionsBtn();
+  reRenderAll();
+}
+
+function toggleOptPop(tier) {
+  const next = !popFilters[tier];
+  // At least one must stay active
+  const otherActive = Object.entries(popFilters).some(([k,v]) => k !== tier && v);
+  if (!next && !otherActive) return;
+  popFilters[tier] = next;
+  document.getElementById('optPop_' + tier).classList.toggle('checked', next);
+  updateOptionsBtn();
+  reRenderAll();
+}
+
+function updateOptionsBtn() {
+  const hasActive = showExclusiveOnly || !popFilters.low || !popFilters.mid || !popFilters.high;
+  document.getElementById('optionsBtn').classList.toggle('has-active', hasActive);
+}
+
+function toggleExclusive() {}
 
 function buildControls() {
   const el = document.getElementById('platformControls');
@@ -464,129 +472,179 @@ function buildControls() {
     btn.className = 'platform-btn' + (p.id === 'all' ? ' active' : '');
     btn.dataset.id = p.id;
     btn.innerHTML = `<span class="dot" style="background:${p.dot}"></span>${p.label}`;
-    btn.onclick = () => selectPlatform(p);
+    btn.onclick = () => togglePlatform(p.id);
     el.appendChild(btn);
   });
 }
 
-function selectPlatform(p) {
-  currentPlatform = p;
-  currentPage = 0;
-  allGames = [];
-  document.querySelectorAll('.platform-btn').forEach(b => {
-    b.classList.toggle('active', b.dataset.id === p.id);
+function togglePlatform(id) {
+  if (id === 'all') {
+    activePlatforms = new Set(['all']);
+  } else {
+    activePlatforms.delete('all');
+    if (activePlatforms.has(id)) {
+      activePlatforms.delete(id);
+      if (activePlatforms.size === 0) activePlatforms.add('all');
+    } else {
+      activePlatforms.add(id);
+    }
+  }
+  updateButtonStates();
+  pages.recent = 0; pages.upcoming = 0; pages.older = 0;
+  fetchSection('recent', true);
+  fetchSection('upcoming', true);
+  if (olderLoaded) fetchSection('older', true);
+}
+
+function updateButtonStates() {
+  document.querySelectorAll('.platform-btn').forEach(btn => {
+    btn.classList.toggle('active', activePlatforms.has(btn.dataset.id));
   });
-  fetchGames(true);
+  const singlePlatform = !activePlatforms.has('all') && activePlatforms.size === 1;
+  const label = document.querySelector('.excl-toggle');
+  const check = document.getElementById('exclusiveCheck');
+  const exclRow = document.getElementById('optExclusive');
+  if (exclRow) exclRow.classList.toggle('disabled', !singlePlatform);
+  if (!singlePlatform && showExclusiveOnly) {
+    showExclusiveOnly = false;
+    document.getElementById('optExclusive')?.classList.remove('checked');
+    updateOptionsBtn();
+    reRenderAll();
+  }
+  // Also disable on initial load if 'all' is active
+  const allActive = activePlatforms.has('all');
+  if (exclRow) exclRow.classList.toggle('disabled', !singlePlatform || allActive);
 }
 
-function changeSort() {
-  currentSort = document.getElementById('sortSelect').value;
-  currentPage = 0;
-  allGames = [];
-  fetchGames(true);
+function getPlatformParam() {
+  if (activePlatforms.has('all')) return null;
+  return [...activePlatforms].map(id => {
+    const p = PLATFORMS.find(p => p.id === id);
+    return p?.igdbId;
+  }).filter(Boolean).join(',');
 }
 
-function loadMore() {
-  currentPage++;
-  fetchGames(false);
+function toggleOlder() {
+  const section = document.getElementById('olderSection');
+  const btn = document.getElementById('olderToggleBtn');
+  const isOpen = section.style.display !== 'none';
+  if (isOpen) {
+    section.style.display = 'none';
+    btn.classList.remove('open');
+  } else {
+    section.style.display = 'block';
+    btn.classList.add('open');
+    if (!olderLoaded) {
+      olderLoaded = true;
+      fetchSection('older', true);
+    }
+  }
 }
 
-async function fetchGames(reset) {
-  const grid = document.getElementById('gameGrid');
-  const btn = document.getElementById('loadMoreBtn');
+function loadMore(mode) {
+  pages[mode]++;
+  fetchSection(mode, false);
+}
+
+async function fetchSection(mode, reset) {
+  const gridId = mode + 'Grid';
+  const btnId = mode + 'MoreBtn';
+  const grid = document.getElementById(gridId);
+  const btn = document.getElementById(btnId);
 
   if (reset) {
-    grid.innerHTML = `<div class="loading" style="grid-column:1/-1"><div class="spinner"></div><span>Spiele werden geladen…</span></div>`;
+    grid.innerHTML = `<div class="loading" style="grid-column:1/-1"><div class="spinner"></div></div>`;
     btn.style.display = 'none';
+    if (reset) pages[mode] = 0;
   } else {
     btn.disabled = true;
     btn.textContent = 'Wird geladen…';
   }
 
-  const params = new URLSearchParams({
-    sort: currentSort,
-    page: currentPage,
-  });
-
-  if (currentPlatform.igdbId) {
-    params.set('platform', currentPlatform.igdbId);
-  }
+  const platformParam = getPlatformParam();
+  const params = new URLSearchParams({ mode, page: pages[mode] });
+  if (platformParam) params.set('platforms', platformParam);
 
   try {
-    const res = await fetch(`/.netlify/functions/games?${params}`);
+    const res = await fetch(`/functions/games?${params}`);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
-
     const games = data.results || [];
 
-    if (reset) {
-      allGames = games;
-      grid.innerHTML = '';
-    } else {
-      allGames = [...allGames, ...games];
-    }
+    if (reset) { grid.innerHTML = ''; cachedGames[mode] = []; }
+    cachedGames[mode] = [...cachedGames[mode], ...games];
 
-    if (allGames.length === 0) {
-      grid.innerHTML = `<div class="error-msg" style="grid-column:1/-1">
-        <strong>Keine Spiele gefunden</strong>
-        Versuche eine andere Plattform oder Sortierung.
-      </div>`;
+    if (cachedGames[mode].length === 0 && reset) {
+      grid.innerHTML = `<div class="error-msg" style="grid-column:1/-1"><strong>Keine Spiele gefunden</strong>Versuche andere Plattformen.</div>`;
     } else {
-      if (reset) grid.innerHTML = '';
-      renderCards(games, grid);
+      renderCards(games, grid, mode === 'upcoming');
     }
-
-    document.getElementById('gameCount').textContent = `${allGames.length} geladen`;
 
     btn.style.display = data.hasMore ? 'block' : 'none';
     btn.disabled = false;
     btn.textContent = 'Mehr laden';
-
   } catch (e) {
-    if (reset) {
-      grid.innerHTML = `<div class="error-msg" style="grid-column:1/-1">
-        <strong>Fehler beim Laden</strong>
-        ${e.message}<br><small>Sind die Umgebungsvariablen in Netlify gesetzt?</small>
-      </div>`;
-    }
+    if (reset) grid.innerHTML = `<div class="error-msg" style="grid-column:1/-1"><strong>Fehler</strong>${e.message}</div>`;
     btn.style.display = 'none';
   }
 }
 
-function renderCards(games, grid) {
-  games.forEach(game => {
+function reRenderAll() {
+  ['recent', 'upcoming', 'older'].forEach(mode => {
+    const grid = document.getElementById(mode + 'Grid');
+    if (!grid || cachedGames[mode].length === 0) return;
+    grid.innerHTML = '';
+    renderCards(cachedGames[mode], grid, mode === 'upcoming');
+  });
+}
+
+function renderCards(games, grid, isUpcoming) {
+  collectGenres(games);
+  const filtered = games.filter(g => {
+    if (showExclusiveOnly && (g.platforms || []).length !== 1) return false;
+    const isUpcoming = !g.first_release_date || g.first_release_date * 1000 > Date.now();
+    const score = isUpcoming ? (g.hypes || 0) : (g.rating_count || 0);
+    const tier = score >= 20 ? 'high' : score >= 5 ? 'mid' : 'low';
+    if (!popFilters[tier]) return false;
+    if (searchQuery && !g.name.toLowerCase().includes(searchQuery)) return false;
+    if (activeGenre && !(g.genres || []).some(genre => String(genre.id) === activeGenre)) return false;
+    return true;
+  });
+  if (filtered.length === 0) return;
+  filtered.forEach(game => {
     const card = document.createElement('div');
     card.className = 'card';
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', e => { if (!e.target.closest('a')) openModal(game); });
 
+    const hypes = game.hypes || 0;
+    const hypeLabel = hypes >= 40 ? '🔥🔥🔥' : hypes >= 10 ? '🔥🔥' : null;
+    const hypeBadge = hypeLabel ? `<span class="hype-badge hot" title="Heiß erwartet!">${hypeLabel}</span>` : '';
     const imgHtml = game.cover?.url
-      ? `<img class="card-img" src="${game.cover.url}" alt="${escHtml(game.name)}" loading="lazy">`
-      : `<div class="card-img-placeholder">🎮</div>`;
+      ? `<div class="card-img-wrap"><img class="card-img" src="${game.cover.url}" alt="${esc(game.name)}" loading="lazy">${hypeBadge}</div>`
+      : `<div class="card-img-wrap"><div class="card-img-placeholder">🎮</div>${hypeBadge}</div>`;
 
     const releaseDate = game.first_release_date
       ? new Date(game.first_release_date * 1000).toLocaleDateString('de-DE', { day: '2-digit', month: 'short', year: 'numeric' })
       : 'TBA';
 
     const genres = game.genres?.map(g => g.name).join(', ') || '';
-    const rating = game.rating ? (game.rating / 20) : 0; // IGDB gibt 0-100
-    const stars = ratingToStars(rating);
-    const ratingText = game.rating ? (game.rating / 20).toFixed(1) : '–';
-
     const platformTags = buildPlatformTags(game.platforms || []);
     const links = buildLinks(game);
+
+    const dateLabel = isUpcoming
+      ? `<span class="release-date">${releaseDate} <span class="upcoming-pill">soon</span></span>`
+      : `<span class="release-date">${releaseDate}</span>`;
 
     card.innerHTML = `
       ${imgHtml}
       <div class="card-body">
         <div class="card-meta">
           <div class="platform-tags">${platformTags}</div>
-          <span class="release-date">${releaseDate}</span>
+          ${dateLabel}
         </div>
-        <div class="card-title">${escHtml(game.name)}</div>
-        ${genres ? `<div class="card-genres">${escHtml(genres)}</div>` : ''}
-        <div class="rating-row">
-          <span class="stars">${stars}</span>
-          <span class="rating-num">${ratingText}/5</span>
-        </div>
+        <div class="card-title">${esc(game.name)}</div>
+        ${genres ? `<div class="card-genres">${esc(genres)}</div>` : ''}
       </div>
       <div class="card-links">${links}</div>
     `;
@@ -594,51 +652,162 @@ function renderCards(games, grid) {
   });
 }
 
-const PLATFORM_STYLES = {
-  'pc':             { color: '#1b9ced', label: 'PC' },
-  'playstation5':   { color: '#003791', label: 'PS5' },
-  'xbox-series-x':  { color: '#107c10', label: 'Xbox' },
-  'nintendo-switch':{ color: '#e4000f', label: 'Switch' },
-};
-
 function buildPlatformTags(platforms) {
-  const shown = platforms.slice(0, 2);
-  return shown.map(p => {
-    const style = PLATFORM_STYLES[p.slug] || { color: '#888899', label: p.name?.slice(0, 6) || '?' };
-    return `<span class="platform-tag" style="background:${style.color}22;color:${style.color};border:1px solid ${style.color}44">${style.label}</span>`;
-  }).join('');
+  if (!platforms.length) return '';
+  if (platforms.length === 1) {
+    const s = getPlatformStyle(platforms[0].slug, platforms[0].name);
+    return `<span class="platform-tag" style="background:${s.color}22;color:${s.color};border:1px solid ${s.color}44">${s.label}</span>`;
+  }
+  return `<span class="platform-tag" style="background:rgba(136,136,153,0.12);color:#888899;border:1px solid rgba(136,136,153,0.3)">Multi</span>`;
 }
 
 function buildLinks(game) {
   const encoded = encodeURIComponent(game.name);
+  const ytSearch = encodeURIComponent(game.name + ' trailer');
   const slugs = game.platforms?.map(p => p.slug) || [];
-  const isPC = slugs.includes('pc') || currentPlatform.ig;
+  const isPC = slugs.includes('pc') || activePlatforms.has('6');
   let html = '';
 
+  // Trailer: YouTube direkt wenn vorhanden, sonst YouTube-Suche
+  const trailerUrl = game.trailerVideoId
+    ? `https://www.youtube.com/watch?v=${game.trailerVideoId}`
+    : `https://www.youtube.com/results?search_query=${ytSearch}`;
+  html += `<a href="${trailerUrl}" target="_blank" rel="noopener" class="btn-link trailer">▶ Trailer</a>`;
+
   if (isPC) {
-    html += `<a href="https://www.instant-gaming.com/de/suche/?query=${encoded}${IG_REF}" target="_blank" rel="noopener" class="btn-link primary">
-      <span>💰</span> Instant Gaming
-    </a>`;
+    html += `<a href="https://www.instant-gaming.com/de/suche/?query=${encoded}${IG_REF}" target="_blank" rel="noopener" class="btn-link primary">💰 IG</a>`;
   }
 
-  html += `<a href="https://www.amazon.de/s?k=${encoded}&tag=${AMAZON_TAG}" target="_blank" rel="noopener" class="btn-link">
-    <span>🛒</span> Amazon
-  </a>`;
-
+  html += `<a href="https://www.amazon.de/s?k=${encoded}&tag=${AMAZON_TAG}" target="_blank" rel="noopener" class="btn-link">🛒</a>`;
   return html;
 }
 
-function ratingToStars(r) {
-  const full = Math.round(r);
-  return '★'.repeat(Math.min(5, full)) + '☆'.repeat(Math.max(0, 5 - full));
-}
-
-function escHtml(str) {
+function esc(str) {
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
+// Search + Genre
+let searchQuery = '';
+let activeGenre = '';
+const allGenres = new Map();
+
+function onSearch() {
+  searchQuery = document.getElementById('searchInput').value.toLowerCase();
+  reRenderAll();
+}
+
+function onGenre() {
+  activeGenre = document.getElementById('genreSelect').value;
+  reRenderAll();
+}
+
+function collectGenres(games) {
+  games.forEach(g => (g.genres || []).forEach(genre => {
+    if (!allGenres.has(genre.id)) {
+      allGenres.set(genre.id, genre.name);
+      const sel = document.getElementById('genreSelect');
+      const opt = document.createElement('option');
+      opt.value = genre.id;
+      opt.textContent = genre.name;
+      sel.appendChild(opt);
+    }
+  }));
+}
+
+// Modal
+function openModal(game) {
+  const cover = game.cover?.url
+    ? `<img class="modal-cover" src="${game.cover.url.replace('t_cover_big','t_screenshot_big')}" alt="${esc(game.name)}">`
+    : `<div class="modal-cover-placeholder">🎮</div>`;
+
+  const releaseDate = game.first_release_date
+    ? new Date(game.first_release_date * 1000).toLocaleDateString('de-DE', { day:'2-digit', month:'long', year:'numeric' })
+    : 'TBA';
+
+  const platformTags = buildPlatformTags(game.platforms || []);
+  const genres = game.genres?.map(g => g.name).join(' · ') || '';
+  const hypes = game.hypes || 0;
+  const hypeLabel = hypes >= 40 ? '🔥🔥🔥' : hypes >= 10 ? '🔥🔥' : null;
+  const encoded = encodeURIComponent(game.name);
+  const ytSearch = encodeURIComponent(game.name + ' trailer');
+  const slugs = game.platforms?.map(p => p.slug) || [];
+  const isPC = slugs.includes('pc') || activePlatforms.has('6');
+  const trailerUrl = game.trailerVideoId
+    ? `https://www.youtube.com/watch?v=${game.trailerVideoId}`
+    : `https://www.youtube.com/results?search_query=${ytSearch}`;
+
+  const allPlatformTags = (game.platforms || []).map(p => {
+    const s = getPlatformStyle(p.slug, p.name);
+    return `<span class="platform-tag" style="background:${s.color}22;color:${s.color};border:1px solid ${s.color}44">${s.label}</span>`;
+  }).join('');
+  const platformsHtml = game.platforms?.length > 1 ? `
+    <div style="margin-bottom:1rem;">
+      <div style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-bottom:6px;">Plattformen</div>
+      <div style="display:flex;gap:4px;flex-wrap:wrap;">${allPlatformTags}</div>
+    </div>` : '';
+
+  const companies = game.involved_companies || [];
+  const developers = companies.filter(c => c.developer).map(c => c.company?.name).filter(Boolean);
+  const publishers = companies.filter(c => c.publisher).map(c => c.company?.name).filter(Boolean);
+  const devPublisherHtml = (developers.length || publishers.length) ? `
+    <div style="display:flex;gap:1.5rem;margin-bottom:1rem;flex-wrap:wrap;">
+      ${developers.length ? `<div><div style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-bottom:3px;">Entwickler</div><div style="font-size:0.82rem;color:var(--text);">${developers.join(', ')}</div></div>` : ''}
+      ${publishers.length ? `<div><div style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-bottom:3px;">Publisher</div><div style="font-size:0.82rem;color:var(--text);">${publishers.join(', ')}</div></div>` : ''}
+    </div>` : '';
+
+  document.getElementById('modalContent').innerHTML = `
+    ${cover}
+    <div class="modal-body">
+      <div class="modal-meta">
+        ${platformTags}
+        <span class="release-date">${releaseDate}</span>
+        ${hypeLabel ? `<span class="hype-badge hot" title="Heiß erwartet!" style="position:static;backdrop-filter:none;background:transparent;border:none;padding:0;font-size:1rem;">${hypeLabel}</span>` : ''}
+      </div>
+      <div class="modal-title">${esc(game.name)}</div>
+      ${genres ? `<div class="modal-genres">${esc(genres)}</div>` : ''}
+      ${devPublisherHtml}
+      ${platformsHtml}
+      ${game.summary ? `<div class="modal-summary">${esc(game.summary)}</div>` : ''}
+      <div class="modal-links">
+        <a href="${trailerUrl}" target="_blank" rel="noopener" class="btn-link trailer">▶ Trailer</a>
+        ${isPC ? `<a href="https://www.instant-gaming.com/de/suche/?query=${encoded}${IG_REF}" target="_blank" rel="noopener" class="btn-link primary">💰 Instant Gaming</a>` : ''}
+        <a href="https://www.amazon.de/s?k=${encoded}&tag=${AMAZON_TAG}" target="_blank" rel="noopener" class="btn-link">🛒 Amazon</a>
+      </div>
+    </div>
+  `;
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModalDirect();
+}
+function closeModalDirect() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalDirect(); });
+
+let currentView = 'list';
+function setView(v) {
+  currentView = v;
+  document.getElementById('btnGrid').classList.toggle('active', v === 'grid');
+  document.getElementById('btnList').classList.toggle('active', v === 'list');
+  document.querySelectorAll('.grid').forEach(g => g.classList.toggle('list-view', v === 'list'));
+}
+
 buildControls();
-fetchGames(true);
+updateButtonStates();
+setView('list');
+fetchSection('recent', true);
+fetchSection('upcoming', true);
 </script>
+<!-- Game Detail Modal -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
 </body>
 </html>
