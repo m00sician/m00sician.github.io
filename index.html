@@ -749,11 +749,13 @@ function openModal(game) {
   const companies = game.involved_companies || [];
   const developers = companies.filter(c => c.developer).map(c => c.company?.name).filter(Boolean);
   const publishers = companies.filter(c => c.publisher).map(c => c.company?.name).filter(Boolean);
-  const devPublisherHtml = (developers.length || publishers.length) ? `
-    <div style="display:flex;gap:1.5rem;margin-bottom:1rem;flex-wrap:wrap;">
-      ${developers.length ? `<div><div style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-bottom:3px;">Entwickler</div><div style="font-size:0.82rem;color:var(--text);">${developers.join(', ')}</div></div>` : ''}
-      ${publishers.length ? `<div><div style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-bottom:3px;">Publisher</div><div style="font-size:0.82rem;color:var(--text);">${publishers.join(', ')}</div></div>` : ''}
-    </div>` : '';
+  let devPublisherHtml = '';
+  if (developers.length || publishers.length) {
+    let inner = '';
+    if (developers.length) inner += '<div><div style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-bottom:3px;">Entwickler</div><div style="font-size:0.82rem;color:var(--text);">' + developers.join(', ') + '</div></div>';
+    if (publishers.length) inner += '<div><div style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-bottom:3px;">Publisher</div><div style="font-size:0.82rem;color:var(--text);">' + publishers.join(', ') + '</div></div>';
+    devPublisherHtml = '<div style="display:flex;gap:1.5rem;margin-bottom:1rem;flex-wrap:wrap;">' + inner + '</div>';
+  }
 
   document.getElementById('modalContent').innerHTML = `
     ${cover}
